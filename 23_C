@@ -1,0 +1,48 @@
+#include <stdio.h>
+
+int div_sum(int n);
+
+int main() {
+    int abundant_list[7000];
+    int abundant_counter = 0;
+    int num;
+    for (num=12; num<=28123; num++) {
+        if (div_sum(num) > num) {
+            abundant_list[abundant_counter] = num;
+            abundant_counter++;
+        }
+    }
+    
+    int i, j;
+    int abundant_set[30000] = {0,};
+    int number;
+    for (i=0; i<abundant_counter; i++) {
+        for (j=i; j<abundant_counter; j++) {
+            number = abundant_list[i] + abundant_list[j];
+            if (number <= 28123) {
+                abundant_set[number] = 1;
+            }
+        }
+    }
+    int abundant_sum = 0;
+    int k;
+    for (k=0; k<30000; k++)
+        if (abundant_set[k] == 1)
+            abundant_sum += k;
+    printf("%d\n", 28123*28124/2 - abundant_sum);
+}
+
+int div_sum(int n) {
+    int total = 0;
+    int d = 1;
+    int d_init = 1;
+    while ((d <= n / d_init) && (d != n)) {
+        if (n % d == 0) {
+            total += d;
+            if (d_init == 1)
+                d_init = d;
+        }
+        d++;
+    }
+    return total;
+}
